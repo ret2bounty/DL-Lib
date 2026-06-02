@@ -136,8 +136,8 @@ Network *dl_create_network(const NetConfig *cfg, int input_size)
         int out_size = cfg->layer_sizes[l];
         Layer *lay = &net->layers[l];
 
-        // Kaiming init
-        float scale = sqrtf(2.0f / (float)in_size);
+        // Kaiming init for PReLU, Xavier for others
+        float scale = (lay->act == ACT_PRELU) ? sqrtf(2.0f / (float)in_size) : sqrtf(1.0f / (float)in_size);
 
         lay->W = mat_alloc(in_size, out_size);
         lay->b = mat_alloc(1, out_size);
