@@ -120,7 +120,7 @@ static float randn_small(void)
     // Box-Muller (sigma=0.01)
     float u1 = ((float)rand() + 1.f) / ((float)RAND_MAX + 1.f);
     float u2 = ((float)rand() + 1.f) / ((float)RAND_MAX + 1.f);
-    return 0.01f * sqrtf(-2.f * logf(u1)) * cosf(2.f * 3.14159265f * u2);
+    return sqrtf(-2.f * logf(u1)) * cosf(2.f * 3.14159265f * u2);
 }
 
 Network *dl_create_network(const NetConfig *cfg, int input_size)
@@ -147,7 +147,7 @@ Network *dl_create_network(const NetConfig *cfg, int input_size)
         lay->A = mat_alloc(1, out_size);
 
         for (size_t i = 0; i < (size_t)(in_size * out_size); i++)
-            lay->W.data[i] = randn_small() * scale / 0.01f;
+            lay->W.data[i] = randn_small() * scale;
 
         mat_zero(&lay->b);
 
